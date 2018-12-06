@@ -3,3 +3,4 @@ czy po wyborze ilości graczy rzeczywiście jest ich tylu
 liczba graczy powyżej 6 lub poiżej 2 to Błąd
 poruszanie w każdą stronę o jeden, niemożliwe gdy zajęte pole, niemożliww wychodzenie za planszę, tablice
 skoki w każdą stronę, warunki skoku (puste gdzie może skoczyć, po drodze brak kul), wychodzenie poza plansze, tablice
+przekraczannie 6 skoków 
