@@ -202,18 +202,36 @@ public class CheckMove {
     cross_move(x,y,longhop, number_of_hop );
   }
   public void calculate_possible_move (){//potrzebne rozbicie bo po skoku nie ma możliwości ruchu o jeden
-    if(x-1 >= 0 && fields [x-1][y] == 1)
+    if(x-1 >= 0 && fields [x-1][y] == 1){
       possible_move [x-1][y].setPossible(true);
-    if(x+1 < fields.length && fields [x+1][y] == 1)
+      possible_move [x-1][y].setPreviousX(x);
+      possible_move [x-1][y].setPreviousY(y);
+    }
+    if(x+1 < fields.length && fields [x+1][y] == 1){
       possible_move [x+1][y].setPossible(true);
-    if(y-1 >= 0 && fields [x][y-1] == 1)
+      possible_move [x+1][y].setPreviousX(x);
+      possible_move [x+1][y].setPreviousY(y);
+    }
+    if(y-1 >= 0 && fields [x][y-1] == 1){
       possible_move [x][y-1].setPossible(true);
-    if(y+1 < fields.length && fields [x][y+1] == 1)
+      possible_move [x][y-1].setPreviousX(x);
+      possible_move [x][y-1].setPreviousY(y);
+    }
+    if(y+1 < fields.length && fields [x][y+1] == 1){
       possible_move [x][y+1].setPossible(true);
-    if(x-1 >= 0 && y-1 >= 0 && fields [x-1][y-1] == 1)
+      possible_move [x][y+1].setPreviousX(x);
+      possible_move [x][y+1].setPreviousY(y);
+    }
+    if(x-1 >= 0 && y-1 >= 0 && fields [x-1][y-1] == 1){
       possible_move [x-1][y-1].setPossible(true);
-    if(x+1 < fields.length && y+1 < fields.length && fields [x+1][y+1] == 1)
+      possible_move [x-1][y-1].setPreviousX(x);
+      possible_move [x-1][y-1].setPreviousY(y);
+    }
+    if(x+1 < fields.length && y+1 < fields.length && fields [x+1][y+1] == 1){
       possible_move [x+1][y+1].setPossible(true);
+      possible_move [x+1][y+1].setPreviousX(x);
+      possible_move [x+1][y+1].setPreviousY(y);
+    }
 
     possible_move[x][y].setPossible(true);//żeby rekurencja się nie cofała, PRZYPADEK MUSI BYĆ WYKLUCZONY PÓŹNIEJ
     hop(x,y,true,0);
@@ -232,7 +250,7 @@ public class CheckMove {
     else
       return false;
   }
-  public void printArray() {
+  public void printArray() {    //printujemy odwrotnie !!!!!!
     for (int i = 0; i< fields.length ;i ++){
       for (int j = 0; j< fields.length; j++ ) {
         if (possible_move[j][i].possible)
@@ -251,7 +269,7 @@ public class CheckMove {
    * @return lista postaci ((x,y),(x,y) ...)
    * gdzie pierwsze wystapienie to szukana pozycja
    * a ostatnia to obecna pozycja
-   * MOŻE ZWRÓCIĆ PUSTĄ SCIEŻKĘ GDY NIE ISTNIEJE POŁĄCZENIE //TODO zwracamy pustą ścieżkę ?
+   * MOŻE ZWRÓCIĆ PUSTĄ SCIEŻKĘ GDY NIE ISTNIEJE POŁĄCZENIE
    */
   public ArrayList getPath(int check_x, int check_y) {
     ArrayList<Integer> path = new ArrayList<>();
