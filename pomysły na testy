@@ -5,3 +5,6 @@ poruszanie w każdą stronę o jeden, niemożliwe gdy zajęte pole, niemożliww 
 skoki w każdą stronę, warunki skoku (puste gdzie może skoczyć, po drodze brak kul), wychodzenie poza plansze, tablice
 przekraczannie 6 skoków 
 wykluczenie ruchu w to samo pole = brak ruchu
+obliczanie drogi do danego punktu
+znajdownaie pkt destynacji (wolnego miejsca w bazie)
+czy gracz wygrał
