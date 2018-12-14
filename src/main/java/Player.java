@@ -15,23 +15,44 @@ public class Player extends Thread{
    */
   private Socket socket;
 
+  /**
+   * Input into particular player.
+   */
+  private BufferedReader in;
 
-  public Player(Game game, Socket socket) {
+  /**
+   * Output into particular player.
+   */
+  private PrintWriter out;
+
+  /**
+   * ID of particular player.
+   */
+  private int id;
+
+  public Player(Game game, Socket socket, int id) {
     this.game = game;
     this.socket = socket;
+    this.id = id;
+  }
+
+  public void confirm() {
+    try {
+      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      out = new PrintWriter(socket.getOutputStream(), true);
+      out.println("NORMAL BOARD");
+      System.out.println(in.readLine());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    System.out.println("Player #" + id + " connected to game.");
   }
 
   @Override
   public void run() {
     String input;
-    try {
-      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-      out.println("PLAYER");
-      System.out.println("Player connected to game");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    out.println("All players are connected");
+
 
   }
 }

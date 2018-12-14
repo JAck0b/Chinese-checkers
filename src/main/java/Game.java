@@ -35,6 +35,7 @@ public class Game {
    * This method adds players to created game.
    */
   private void addPlayers() {
+    int counter = 0;
 //    System.out.println("Player = " + numberOfPlayers);
 //    System.out.println("Boots = " + numberOfBoots);
     System.out.println("Size of list = " + playerList.size());
@@ -46,9 +47,13 @@ public class Game {
           break;
         }
         System.out.println("Creating player");
-          playerList.add(new Player(this, server.getSocket().accept()));
-
+        Player player = new Player(this, server.getSocket().accept(), counter++);
+        playerList.add(player);
+        player.confirm();
       }
+//      for (int i = 0; i < playerList.size(); i++) {
+//        playerList.get(i).confirm();
+//      }
       for (int i = 0; i < playerList.size(); i++) {
         playerList.get(i).start();
       }
