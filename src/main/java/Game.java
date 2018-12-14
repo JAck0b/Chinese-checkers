@@ -1,3 +1,5 @@
+import logic.NormalBoard;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -12,16 +14,25 @@ public class Game {
   /**
    * Number of players in created game.
    */
-  private int numberOfPlayers;
+  private int numberOfPlayers = 0;
   /**
    * Number of boots in created game.
    */
-  private int numberOfBoots;
+  private int numberOfBoots = 2;
 
   /**
    * List of players in this game.
    */
   private List<Player> playerList;
+
+  NormalBoard nb;
+  private static int[][] fields;
+  private int [] number_of_skip_by_id = {0,0,0,0,0,0};
+  private boolean [] still_in_game = {true,true,true,true,true,true};
+  private int totalsteps =0;  //number of move in game
+  private ArrayList<int[][]> bases;
+  private ArrayList <Integer> winners = new ArrayList<>();
+  static int number_of_players;
 
   public Game(Server server, int numberOfPlayers, int numberOfBoots) {
     this.server = server;
@@ -29,6 +40,8 @@ public class Game {
     this.numberOfBoots = numberOfBoots;
     playerList = new ArrayList<>();
     addPlayers();
+    nb = new NormalBoard(this.numberOfPlayers);
+    fields = nb.fields;
   }
 
   /**
@@ -69,5 +82,29 @@ public class Game {
     }
 
   }
+  public String fieldsToString(){
+    String result = "";
+    for (int i = 0; i < fields.length; i++){
+      for (int j = 0 ; j < fields.length ; j++){
+        result = result + fields [i][j] + " ";
+      }
+    }
+    return result;
+  }
 
+  public void setFieldsfromString(int[][] fields,String receive) {
+    int index=0, distance;
+    for (int i = 0; i < fields.length; i++){
+      for (int j = 0 ; j < fields.length ; j++){
+        distance = 1 ;
+        while(receive.charAt(index + distance) != ' '){
+          distance ++;
+        }
+        fields [i][j] = Integer.parseInt(receive.substring(index,(index + distance)));
+        index = index + distance + 1;
+      }
+    }
+
+
+  }
 }
