@@ -30,7 +30,7 @@ public class Game {
     playerList = new ArrayList<>();
     addPlayers();
   }
-
+  // TODO przemyślec ustawienie start()
   /**
    * This method adds players to created game.
    */
@@ -60,12 +60,14 @@ public class Game {
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      try {
-        server.getSocket().close();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.out.println("I cannot close socket.");
-      }
+//      try {
+//        System.out.println("Server is closed. GAME");
+////        server.getSocket().close();
+////        Server.setFinished(true);
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//        System.out.println("I cannot close socket.");
+//      }
     }
 
   }

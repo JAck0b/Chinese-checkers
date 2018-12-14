@@ -12,6 +12,7 @@ public class Server {
     finished = true;
     while (true) {
       if (finished) {
+        setFinished(false);
         Server server = new Server();
         server.initial();
       }
@@ -25,16 +26,18 @@ public class Server {
       System.out.println("Server is running.");
       socket = new ServerSocket(PORT);
       Administrator administrator = new Administrator(this, socket.accept());
-      administrator.run();
+      administrator.start();
     } catch (IOException e) {
+      System.out.println("Bład IOException");
       e.printStackTrace();
     } finally {
-      try {
-        socket.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.out.println("I cannot close socket.");
-      }
+//      try {
+//        System.out.println("Socket is closed. Server");
+//        socket.close();
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//        System.out.println("I cannot close socket.");
+//      }
     }
   }
 

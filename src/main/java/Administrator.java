@@ -28,7 +28,6 @@ public class Administrator extends Thread {
         int playersNumber;
         playersNumber = Integer.parseInt(input.substring(4, 5));
         bootsNumber = Integer.parseInt(input.substring(6, 7));
-        Server.setFinished(false);
         server.createGame(playersNumber, bootsNumber);
       }
     } catch (IOException e) {

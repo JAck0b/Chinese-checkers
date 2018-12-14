@@ -51,8 +51,23 @@ public class Player extends Thread{
   @Override
   public void run() {
     String input;
-    out.println("All players are connected");
-
+    String output;
+    try {
+      out.println("All players are connected");
+      input = in.readLine();
+      System.out.println(input);
+      output = String.valueOf(Integer.parseInt(input.substring(0, 1)) +1);
+      out.println(output);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        System.out.println("Socket is closed. RUN");
+        socket.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
   }
 }
