@@ -9,7 +9,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
 //    String string = "kuba 1";
 //    System.out.println(string.substring(3, 6));
-    System.out.println("Server is running");
+    System.out.println("logic.Server is running");
 //    users = new LinkedList<>();
     int clientNumber = 0;
     ServerSocket listener = new ServerSocket(8888);

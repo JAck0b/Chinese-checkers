@@ -110,7 +110,7 @@ public class NormalBoard {
     }
   }
 
-  public static void main(String[] args) {
+  //public static void main(String[] args) {
 //    NormalBoard nb = new NormalBoard(2);
 //    CheckMove checkMove = new CheckMove(true);
 //    checkMove.setFields(nb.fields);
@@ -126,5 +126,5 @@ public class NormalBoard {
 
 
 
-  }
+  //}
 }

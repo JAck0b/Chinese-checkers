@@ -1,3 +1,5 @@
+package logic;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -17,7 +19,7 @@ public class Server {
         server.initial();
       }
     }
-//    Game game = new Game(null,0,0);
+//    logic.Game game = new logic.Game(null,0,0);
 //    String help = game.fieldsToString();
 //    System.out.println(help);
 //    int[][] f = new int[][]{
@@ -59,7 +61,7 @@ public class Server {
 
   public void initial() {
     try {
-      System.out.println("Server is running.");
+      System.out.println("logic.Server is running.");
       socket = new ServerSocket(PORT);
       Administrator administrator = new Administrator(this, socket.accept());
       administrator.start();
@@ -68,7 +70,7 @@ public class Server {
       e.printStackTrace();
     } finally {
 //      try {
-//        System.out.println("Socket is closed. Server");
+//        System.out.println("Socket is closed. logic.Server");
 //        socket.close();
 //      } catch (IOException e) {
 //        e.printStackTrace();
@@ -76,9 +78,9 @@ public class Server {
 //      }
     }
   }
-
-  public void createGame(int playersNumber, int bootsNumber) {
-    game = new Game(this, playersNumber, bootsNumber);
+//todo lonhop
+  public void createGame(int playersNumber, int bootsNumber, boolean longhop) {
+    game = new Game(this, playersNumber, bootsNumber,longhop);
   }
 
   public ServerSocket getSocket() {

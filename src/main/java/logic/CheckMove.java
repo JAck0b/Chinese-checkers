@@ -7,7 +7,7 @@ public class CheckMove {
   private boolean longhop;
   private int x,y; //pozycja obecna
   private PossibleMove [][] possible_move; // tablica możliwości ruchu dla danego x,y
-  CheckMove(boolean longhop){
+  public CheckMove(boolean longhop){
     this.longhop = longhop;
   }
 
@@ -218,7 +218,6 @@ public class CheckMove {
     int help = fields[x][y];  //nie może skakać w rekurencji przez swój pionke
     fields[x][y]=1;
 
-
     if(x-1 >= 0 && fields [x-1][y] == 1){
       possible_move [x-1][y].setPossible(true);
       possible_move [x-1][y].setPreviousX(x);
@@ -263,7 +262,21 @@ public class CheckMove {
   PossibleMove [][] getPossible_move() {
     return possible_move;
   }
-  private boolean check_move(int check_x, int check_y){
+  int [][] getPossible_move_array(){
+    int size = fields.length;
+    int [][] result = new int[size][size];
+    for (int i = 0; i< fields.length ;i ++) {
+      for (int j = 0; j < fields.length; j++) {
+        if(possible_move[i][j].possible)
+          result [i][j] = 1;
+        else
+          result [i][j] = 0;
+
+      }
+    }
+    return result;
+  }
+  public boolean check_move(int check_x, int check_y){
     return possible_move[check_x][check_y].possible && !(x == check_x && y == check_y);
   }
 
@@ -277,10 +290,10 @@ public class CheckMove {
    * a ostatnia to obecna pozycja
    * MOŻE ZWRÓCIĆ PUSTĄ SCIEŻKĘ GDY NIE ISTNIEJE POŁĄCZENIE
    */
-  /*
-  public ArrayList getPath(int check_x, int check_y) {
+
+  public ArrayList<Integer> getPath(int check_x, int check_y) {
     ArrayList<Integer> path = new ArrayList<>();
-    if(check_move(check_x,check_y)){
+    if(possible_move [check_x][check_y].possible && !( x == check_x && y == check_y )){
       path.add(check_x);
       path.add(check_y);
       int help_x, help_y;
@@ -295,6 +308,7 @@ public class CheckMove {
     }
     return path;
   }
+  /*
   public void printPath (ArrayList <Integer> path){
     for (int i = 0; i < path.size() ; i = i + 2)
       System.out.println("(" + path.get(i) + "," + path.get(i+1) + ")");

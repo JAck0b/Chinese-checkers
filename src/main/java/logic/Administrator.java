@@ -1,3 +1,5 @@
+package logic;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,9 +28,11 @@ public class Administrator extends Thread {
       if (input.startsWith("NEW")) {
         int bootsNumber;
         int playersNumber;
+        boolean longhop;
         playersNumber = Integer.parseInt(input.substring(4, 5));
         bootsNumber = Integer.parseInt(input.substring(6, 7));
-        server.createGame(playersNumber, bootsNumber);
+        longhop = Boolean.parseBoolean(input.substring(8, 9));
+        server.createGame(playersNumber, bootsNumber,longhop);
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -37,7 +41,7 @@ public class Administrator extends Thread {
         socket.close();
       } catch (IOException e) {
         e.printStackTrace();
-        System.out.println("Administrator is disconnected.");
+        System.out.println("logic.Administrator is disconnected.");
       }
     }
   }
