@@ -57,9 +57,6 @@ public class Player extends Thread{
 
   @Override
   public void run() {
-    while (!game.allConected) {
-
-    }
     try {
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       out = new PrintWriter(socket.getOutputStream(), true);
@@ -67,7 +64,19 @@ public class Player extends Thread{
       e.printStackTrace();
     }
     out.println("NORMAL BOARD");
+    System.out.println("NORMALBOARD " + id);
+    while (!game.isAllConnected()) {
+//      try {
+//        in.readLine();
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      }
+    }
+    System.out.println("Jestem za");
+//    yield();
+    System.out.println("BOARD " + id);
     out.println("BOARD");
+    System.out.println("Jestem za");
     out.println(game.arrayToString(game.fields));
     out.println("PLAYER " + String.valueOf(game.current_player));
 //    game.send_to_everyone("PLAY " + String.valueOf(game.current_player));

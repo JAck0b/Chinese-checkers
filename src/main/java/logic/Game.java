@@ -30,7 +30,11 @@ public class Game {
    */
   private List<Player> playerList;
 
-  public boolean allConected = false;
+  private volatile boolean allConnected = false;
+
+  public synchronized boolean isAllConnected() {
+    return allConnected;
+  }
 
   public int current_player = 2;
  // boolean longhop;
@@ -213,13 +217,14 @@ public class Game {
       while (true) {
         System.out.println(playerList.size() == numberOfPlayers);
         if (playerList.size() == numberOfPlayers) {
-          allConected = true;
+          allConnected = true;
           break;
         }
         System.out.println("Creating player");
         Player player = new Player(this, server.getSocket().accept(), id_by_step(counter,numberOfPlayers+numberOfBots));
         counter++;
         playerList.add(player);
+        player.setDaemon(true);
         player.start();
       }
 
