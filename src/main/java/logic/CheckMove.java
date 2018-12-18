@@ -12,22 +12,11 @@ public class CheckMove {
   }
 
 
-  private int getX() {
-    return x;
-  }
-  private int getY() {
-    return y;
-  }
-
   public void setXY(int x, int y) {  //ROBI WSZYTKO TWORZY ZERUJE I OBLICZA POSSIBLE MOVE
     this.x = x;
     this.y = y;
     preapare_array_possible_move();
     calculate_possible_move(longhop);      //todo czy przesada że wszytko w jednym?
-  }
-
-  public int[][] getFields() {
-    return fields;
   }
 
   public void setFields(int[][] fields) {
@@ -154,7 +143,7 @@ public class CheckMove {
     if(number_of_hop < 6){
       int i=1;
       boolean canhop = true;
-      while(((x - i) >= 0) && ((y - i) >= 0) && canhop){  //poszukiwanie pierwszej kuli do przeskoczenia w góra-lewo, nie ma co sprawdzać gdy nie spełnione warunki
+      while(x - i >= 0 && y - i >= 0){  //poszukiwanie pierwszej kuli do przeskoczenia w góra-lewo, nie ma co sprawdzać gdy nie spełnione warunki
         if(!longhop && i>1)
           break;
         if(fields [x-i][y-i] >= 2 && y - 2*i >= 0 && x - 2*i >= 0) { //czy kula i wychodzenie poza zakres po skoku
@@ -182,7 +171,7 @@ public class CheckMove {
       //analogicznie w dół-prawo
       i=1;
       canhop = true;
-      while(x+i<fields.length && y+i < fields.length && canhop){  //poszukiwanie pierwszej kuli do przeskoczenia w górę, nie ma co sprawdzać gdy nie spełnione warunki
+      while(x + i < fields.length && y + i < fields.length){  //poszukiwanie pierwszej kuli do przeskoczenia w górę, nie ma co sprawdzać gdy nie spełnione warunki
         if(!longhop && i>1)
           break;
         if(fields [x+i][y+i] >= 2 && x + 2*i < fields.length && y + 2*i < fields.length) { //czy kula i wychodzenie poza zakres po skoku
@@ -211,7 +200,8 @@ public class CheckMove {
   }
 
   private void preapare_array_possible_move(){
-    int size = fields.length;
+    int size;
+    size = fields.length;
     possible_move = new PossibleMove[size][size];
     for (int i = 0; i< fields.length ;i ++) {
       for (int j = 0; j < fields.length; j++) {
@@ -322,10 +312,10 @@ public class CheckMove {
     }
     return path;
   }
-  public void printPath (ArrayList <Integer> path){
-    for (int i = 0; i < path.size() ; i = i + 2)
-      System.out.println("(" + path.get(i) + "," + path.get(i+1) + ")");
-  }
+//  public void printPath (ArrayList <Integer> path){
+//    for (int i = 0; i < path.size() ; i = i + 2)
+//      System.out.println("(" + path.get(i) + "," + path.get(i+1) + ")");
+//  }
 
 
 }

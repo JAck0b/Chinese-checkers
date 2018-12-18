@@ -1,17 +1,12 @@
 package logic;
 
-import logic.CheckMove;
-import logic.NormalBoard;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class Game {
+class Game {
   // TODO  Na koniec gry, gdy się skończy trzeba wywołać metodę listener.
   /**
    * Main server.
@@ -32,35 +27,31 @@ public class Game {
 
   private volatile boolean allConnected = false;
 
-  public synchronized boolean isAllConnected() {
+  synchronized boolean isAllConnected() {
     return allConnected;
   }
 
-  public int current_player = 2;
+  volatile int current_player = 2;
  // boolean longhop;
   boolean game_run = true;
-  NormalBoard nb;
   CheckMove checkMove;
-  Bot bot;
+  private Bot bot;
   int[][] fields;
-  int [] number_of_skip_by_id = {0,0,0,0,0,0};
-  boolean [] still_in_game = {true,true,true,true,true,true};
-  boolean [] play_bot = {true,true,true,true,true,true};
+  private int [] number_of_skip_by_id = {0,0,0,0,0,0};
+  private boolean [] still_in_game = {true,true,true,true,true,true};
+  private boolean [] play_bot = {true,true,true,true,true,true};
   int totalsteps =0;
-  ArrayList<int[][]> bases;
+  private ArrayList<int[][]> bases;
  // ArrayList <Integer> winners = new ArrayList<>();
 
-  public Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop) {
+  Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop) {
     this.server = server;
     this.numberOfPlayers = numberOfPlayers;
     this.numberOfBots = numberOfBoots;
     playerList = new ArrayList<>();
-    nb = new NormalBoard(numberOfPlayers + numberOfBots);
-    //this.longhop = longhop;
-    System.out.println("HOOOP = " + longhop);
+    NormalBoard nb = new NormalBoard(numberOfPlayers + numberOfBots);
     checkMove = new CheckMove(longhop);
     bot = new Bot(nb.fields,longhop);
-//    nb.printArray();
     this.fields = nb.fields;
     checkMove.setFields(fields);
     addPlayers();
@@ -69,7 +60,7 @@ public class Game {
     for(int i = 0; i < numberOfPlayers; i++ )
       play_bot[i] = false;
   }
-  public int id_by_step(int steps,int  number_of_all_players){
+  private int id_by_step(int steps, int number_of_all_players){
 
     //rusza botami w kolejności zegara
     int id = 0;
@@ -112,39 +103,14 @@ public class Game {
     }
     return id;
   }
-  public String arrayToString(int [][] tab){
+  String arrayToString(int[][] tab){
     StringBuilder result = new StringBuilder();
-    for (int i = 0; i < tab.length; i++){
-      for (int j = 0 ; j < tab.length ; j++){
-        result.append(tab[i][j]).append(" ");
+    for (int[] aTab : tab) {
+      for (int j = 0; j < tab.length; j++) {
+        result.append(aTab[j]).append(" ");
       }
     }
     return result.toString();
-  }
-  public void setFieldsfromString(int[][] fields,String receive) {
-    int index=0, distance;
-    for (int i = 0; i < fields.length; i++){
-      for (int j = 0 ; j < fields.length ; j++){
-        distance = 1 ;
-        while(receive.charAt(index + distance) != ' '){
-          distance ++;
-        }
-        fields [i][j] = Integer.parseInt(receive.substring(index,(index + distance)));
-        index = index + distance + 1;
-      }
-    }
-  }
-
-  public synchronized boolean legalMove(int x, int y, int check_x, int check_y, int player_id) {
-    if(player_id != current_player)
-      return false;
-    else {
-      checkMove.setFields(fields);
-      checkMove.setXY(x,y);
-      if(checkMove.check_move(check_x,check_y))
-        return true;
-      return false;
-    }
   }
 
   private void add_bases(){
@@ -164,7 +130,7 @@ public class Game {
     };
     bases.add(base4);
   }
-  boolean all_in_base(int id){
+  private boolean all_in_base(int id){
     int checkX =0, checkY =0;
     for(int i=0; i < 10 ; i++ ){
       switch (id) {
@@ -230,18 +196,9 @@ public class Game {
 
     } catch (IOException e) {
       e.printStackTrace();
-    } finally {
-//      try {
-//        System.out.println("logic.Server is closed. GAME");
-////        server.getSocket().close();
-////        logic.Server.setFinished(true);
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//        System.out.println("I cannot close socket.");
-//      }
     }
   }
-  public boolean end_of_game (){  //kończy nawet gdy jeden gracz został tylko (potrzebne do utknięcia)
+  private boolean end_of_game(){  //kończy nawet gdy jeden gracz został tylko (potrzebne do utknięcia)
     boolean onlyoneplayerleft = false;
     for (int i = 0; i< numberOfBots + numberOfPlayers ;i++ )
       if(still_in_game[i]){
@@ -252,22 +209,18 @@ public class Game {
     }
     return true;
   }
-  public void send_to_everyone(String s){
-    for(int i = 0; i< playerList.size(); i++) {
-      //out = playerList.get(i).out;
-//      System.out.println("WYSYŁANIE W SEND TO EVER : " + s);
-      (playerList.get(i).out).println(s);
+  void send_to_everyone(String s){
+    for (Player aPlayerList : playerList) {
+      (aPlayerList.out).println(s);
     }
   }
-  public void time_for_bot(int id, int steps){
-//    System.out.println("BOT PEZED");
+  private void time_for_bot(int id, int steps){
     bot.setId(id);
     bot.setBases(bases);
-//    System.out.println("BOT PO USTALENIU ID");
     int help = totalsteps/(numberOfPlayers+numberOfBots);
+    int help2 = totalsteps % (numberOfPlayers+numberOfBots);
     bot.setSteps_in_game(help);
     bot.calculate_best_move();
-    //czy ruch pomijany
     ArrayList<Integer> path;
     if(!bot.isBot_skip_move()) {
       path = bot.getPath_best_move();
@@ -278,9 +231,8 @@ public class Game {
 
       send_to_everyone("BOARD");
       send_to_everyone(arrayToString(fields));
-      send_to_everyone("PLAYER " + String.valueOf(current_player));
+      send_to_everyone("PLAYER " + String.valueOf(help2) + " " + String.valueOf(current_player));
       send_to_everyone("STEPS " + String.valueOf(help));
-
 
       try {
         sleep(2000);
@@ -304,9 +256,10 @@ public class Game {
 
 
   }
-  public void kill(){
+  void kill(){
     try {
       System.out.println("Server is closed. GAME");
+      send_to_everyone("KILL");
       server.getSocket().close();
       logic.Server.setFinished(true);
     } catch (IOException e) {
@@ -314,9 +267,11 @@ public class Game {
       System.out.println("I cannot close socket.");
     }
   }
-  public synchronized void next_player(int id){
-    if(all_in_base(id))
+  synchronized void next_player(int id){
+    if(all_in_base(id)){
       still_in_game[id-2] = false;
+      System.out.println("WYGRANA: " + (id-2) + " dla " + totalsteps%(numberOfPlayers+numberOfBots));
+    }
 
     if(end_of_game()){
       //server.
@@ -324,8 +279,9 @@ public class Game {
 
       send_to_everyone("BOARD");
       send_to_everyone(arrayToString(fields));
-      send_to_everyone("PLAYER " + String.valueOf(current_player));
       int help = totalsteps/(numberOfPlayers+numberOfBots);
+      int help2 = totalsteps%(numberOfPlayers+numberOfBots);
+      send_to_everyone("PLAYER " + String.valueOf(help2) + " " + String.valueOf(current_player));
       send_to_everyone("STEPS " + String.valueOf(help));
       //todo koniec
       kill();
@@ -338,6 +294,12 @@ public class Game {
     while(!still_in_game[steps] || play_bot[steps] ){
       if(play_bot[steps]) {
         current_player = id_by_step(steps, numberOfPlayers + numberOfBots);
+        System.out.println("zmieniam current playera na: " + current_player);
+//        try {
+//          sleep(1000);
+//        } catch (InterruptedException e) {
+//          e.printStackTrace();
+//        }
         time_for_bot(id_by_step(steps  , numberOfPlayers + numberOfBots) , steps);
       }
       totalsteps++;
@@ -346,15 +308,20 @@ public class Game {
     new_id = id_by_step(steps, numberOfPlayers + numberOfBots);
 
 //todo invalid, winnersy wysyłane
-    // todo 2 klientow
-    //todo wlasciwe zakonczenie
 
-    //System.out.println("UPADTE OBECNY " + current_player + " " + new_id);
+    try {
+      sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
     current_player = new_id;
+    System.out.println("zmieniam current playera na po : " + current_player);
     send_to_everyone("BOARD");
     send_to_everyone(arrayToString(fields));
-    send_to_everyone("PLAYER " + String.valueOf(current_player));
     int help = totalsteps/(numberOfPlayers+numberOfBots);
-    send_to_everyone("STEPS " + String.valueOf(help));
+    int help2 = totalsteps%(numberOfPlayers+numberOfBots);
+    send_to_everyone("PLAYER " + String.valueOf(help2) + " " + String.valueOf(current_player));
+    send_to_everyone("STEPS " + String.valueOf(help) );
   }
 }

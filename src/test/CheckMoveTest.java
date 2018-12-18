@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class CheckMoveTest {
-  NormalBoard nb;
-  CheckMove checkMove;
-  int [][] fields1 = new int[][]{
+  private int [][] fields1 = new int[][]{
     {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -32,7 +30,7 @@ public class CheckMoveTest {
   @Test
   public void shortest_path () {
     //szukana ścieżka od (12,12) do (8,8)
-    checkMove = new CheckMove(true);
+    CheckMove checkMove = new CheckMove(true);
     checkMove.setFields(fields1);
     checkMove.setXY(12,12);
     ArrayList <Integer> test = new ArrayList<>();
@@ -43,8 +41,8 @@ public class CheckMoveTest {
     test.add(10);
     test.add(12);
     test.add(12);
-    assertArrayEquals(test.toArray(),checkMove.getPath(8,8).toArray());
-    assertEquals(2,checkMove.possible_move[8][8].number_of_step);
+    assertArrayEquals(test.toArray(), checkMove.getPath(8,8).toArray());
+    assertEquals(2, checkMove.possible_move[8][8].number_of_step);
 
   }
 

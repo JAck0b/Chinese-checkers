@@ -11,14 +11,14 @@ public class Administrator extends Thread {
   private Server server;
   private Socket socket;
 
-  public Administrator(Server server, Socket socket) {
+  Administrator(Server server, Socket socket) {
     this.server = server;
     this.socket = socket;
   }
 
   public void run() {
     try {
-      String input = null;
+      String input;
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       out.println("ADMINISTRATOR");

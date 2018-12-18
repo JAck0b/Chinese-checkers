@@ -18,7 +18,7 @@ public class Player extends Thread{
   /**
    * logic.Player's socket.
    */
-  Socket socket;
+  private Socket socket;
 
   /**
    * Input into particular player.
@@ -36,24 +36,11 @@ public class Player extends Thread{
   private int id;
 
 
-  public Player(Game game, Socket socket, int id) {
+  Player(Game game, Socket socket, int id) {
     this.game = game;
     this.socket = socket;
     this.id = id;
   }
-
-  public void confirm() {
-    try {
-      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      out = new PrintWriter(socket.getOutputStream(), true);
-      out.println("NORMAL BOARD");
-      System.out.println(in.readLine());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    System.out.println("logic.Player #" + id + " connected to game.");
-  }
-
 
   @Override
   public void run() {
@@ -64,36 +51,35 @@ public class Player extends Thread{
       e.printStackTrace();
     }
     out.println("NORMAL BOARD");
-    System.out.println("NORMALBOARD " + id);
+
     while (!game.isAllConnected()) {
-//      try {
-//        in.readLine();
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//      }
+      try {
+        sleep(500);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
     out.println("BOARD");
     out.println(game.arrayToString(game.fields));
-    out.println("PLAYER " + String.valueOf(game.current_player));
     int help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
-    out.println("STEPS " + String.valueOf(help));
+    int help2 = game.totalsteps%(game.numberOfPlayers + game.numberOfBots);
+    out.println("PLAYER " + String.valueOf(help2)  + " " + String.valueOf(game.current_player));
+    out.println("STEPS " + String.valueOf(help) + "  5");
+    out.println("YOURID " + id);
 
     String input;
     //String output;
     int firstX=0,firstY=0;
     int [][] possible_move = null;
+    String [] parts;
     boolean first_already_pick = false; //wybór początkowej pozycji z której skaczemy
     try {
       while (game.game_run){
-        input = in.readLine();
-        String [] parts = null;
-        if(input != null ){
 
+        input = in.readLine();
+        if(input != null ){
+          System.out.println("OTRZYMUJE " + input);
           parts = input .split(" ");
-          if(input.substring(0, 4).equals("SKIP")){
-            // game.number_of_skip_by_id[] todo czy wywalamy użytkownika po 3 skipach?
-            game.next_player(id);
-          }
           if(input.startsWith("KILL")){
             System.out.println("Server is closed BY USER");
             game.send_to_everyone("KILL");
@@ -102,20 +88,18 @@ public class Player extends Thread{
 //          Server.setFinished(true);
             break;
           }
-          if(id == game.current_player && input.substring(0, 3).equals("COR")){
-
-            //game.nb.printArray();
+          else if(id == game.current_player && input.substring(0, 4).equals("SKIP")){
+//            System.out.println("czy currnet = " + (id == game.current_player));
+            // game.number_of_skip_by_id[] todo czy wywalamy użytkownika po 3 skipach?
+            System.out.println("SKIP");
+            game.next_player(id);
+          }
+          else if(id == game.current_player && input.substring(0, 3).equals("COR")) {
             if(!first_already_pick) {
-              // System.out.println("PRZED =  " + game.fields[Integer.parseInt(input.substring(4,5))][Integer.parseInt(input.substring(6,7))]);
-              //COR x,y - wiadomosc od playera
               while (game.fields[Integer.parseInt(parts[1])][Integer.parseInt(parts[2])] != id ) { //dopóki nie wybierze swojego pionka
-                //System.out.println("ID W: " + game.fields[Integer.parseInt(input.substring(4,5))][Integer.parseInt(input.substring(6,7))]);
-                ;
                 input = in.readLine();
                 parts = input .split(" ");
-//              System.out.println("odbieram w srdku: " + input);
               }
-//            System.out.println("MAM PIERWSZE");
               firstX = Integer.parseInt(parts[1]);
               firstY = Integer.parseInt(parts[2]);
               game.checkMove.setXY(firstX,firstY);
@@ -130,37 +114,27 @@ public class Player extends Thread{
               if(possible_move [x][y] == 1 && !(firstX == x && firstY == y)){ //czy możliwy ruch na pole wybrane przez kllienta
                 ArrayList<Integer> path;
                 path = game.checkMove.getPath(x,y);
-                //game.checkMove.printPath(path);
-
                 game.fields[path.get(0)][path.get(1)] = id *100; //pkt docelowy
                 for(int i=2; i< path.size();i=i+2) //ścieżka
                   game.fields[path.get(i)][path.get(i+1)] = id*10;
 
-//              System.out.println("WYSYLANIE");
-
+                //todo po co help
+                help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
+                help2 = game.totalsteps%(game.numberOfPlayers + game.numberOfBots);
                 game.send_to_everyone("BOARD");
                 game.send_to_everyone(game.arrayToString(game.fields));
-                game.send_to_everyone("PLAYER " + String.valueOf(game.current_player));
-                //help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
-                game.send_to_everyone("STEPS " + String.valueOf(help));
-//              out.println("BOARD");
-//              out.println(game.arrayToString(game.fields));
-//              out.println(game.current_player);
-//              int help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
-//              out.println(help);
+                game.send_to_everyone("PLAYER " + String.valueOf(help2) + " " + String.valueOf(game.current_player));
+                game.send_to_everyone("STEPS " + String.valueOf(help) + "  4");
 
                 sleep(2000);
 
-                //plansza wraca jako normalne pole
-                game.fields[path.get(0)][path.get(1)] = id;
+                game.fields[path.get(0)][path.get(1)] = id; //plansza wraca jako normalne pole
                 for(int i=2; i< path.size();i=i+2){
                   game.fields[path.get(i)][path.get(i+1)] = 1;
                 }
 
-                // next move
-                game.next_player(id);
+                game.next_player(id); // next move
                 first_already_pick = false;
-
               }
               else if (game.fields[x][y] == id){ //użytkownik wybrał innego swojego pionka
                 game.checkMove.setXY(x,y);
@@ -173,20 +147,22 @@ public class Player extends Thread{
                 first_already_pick = false;
             }
           }
+          else if (id != game.current_player){
+            out.println("YO NIE TWOJ RUCH");
+          }
         }
-
-
       }
 
-
-//      System.out.println(input);
-//      output = String.valueOf(Integer.parseInt(input.substring(0, 1)) +1);
-//      out.println(output);
     } catch (IOException e) {
+      System.out.println("EX");
       e.printStackTrace();
     } catch (InterruptedException e) {  //do sleepa
+      System.out.println("EX");
+      System.exit(0);
       e.printStackTrace();
-    } finally {
+    }
+
+    finally {
       try {
         System.out.println("Socket is closed. RUN");
         socket.close();
@@ -194,7 +170,5 @@ public class Player extends Thread{
         e.printStackTrace();
       }
     }
-
-
   }
 }

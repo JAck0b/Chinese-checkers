@@ -2,34 +2,34 @@ package logic;
 
 import java.util.ArrayList;
 
-public class Bot {
+class Bot {
   private int [][] fields;
   private ArrayList<int[][]> bases;
   private ArrayList<Integer> checkers_in_base;
-  private ArrayList <Integer> path_best_move = new ArrayList<>();
+  private ArrayList path_best_move = new ArrayList<>();
   private int id; //ID of player(nr pionków)
   private int destinationX, destinationY;
   private boolean bot_skip_move, longhop;
   private int steps_in_game;
 
-  public Bot(int[][] fields, boolean longhop){
+  Bot(int[][] fields, boolean longhop){
     this.fields = fields;
     this.longhop = longhop;
   }
 
-  public void setId(int id) {
+  void setId(int id) {
     this.id = id;
   }
 
-  public void setSteps_in_game(int steps_in_game) {
+  void setSteps_in_game(int steps_in_game) {
     this.steps_in_game = steps_in_game;
   }
 
-  public void setBases(ArrayList<int[][]> bases) {
+  void setBases(ArrayList<int[][]> bases) {
     this.bases = bases;
   }
 
-  public ArrayList<Integer> getPath_best_move() {
+  ArrayList getPath_best_move() {
     return path_best_move;
   }
 
@@ -158,7 +158,7 @@ public class Bot {
     }
 
   }
-  public void calculate_best_move (){
+  void calculate_best_move(){
     Bot_move bot_move = new Bot_move(fields,longhop,steps_in_game,bases);
     checkers_in_base = new ArrayList<>();
     find_destinaionXY();
@@ -182,12 +182,12 @@ public class Bot {
     }
   }
 
-  public boolean isBot_skip_move() {
+  boolean isBot_skip_move() {
     return bot_skip_move;
   }
 
-  public void printPath (ArrayList <Integer> path){
-    for (int i = 0; i < path.size() ; i = i + 2)
-      System.out.println("(" + path.get(i) + "," + path.get(i+1) + ")");
-  }
+//  public void printPath (ArrayList <Integer> path){
+//    for (int i = 0; i < path.size() ; i = i + 2)
+//      System.out.println("(" + path.get(i) + "," + path.get(i+1) + ")");
+//  }
 }

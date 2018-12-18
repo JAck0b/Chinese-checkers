@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
-public class Bot_move {
+class Bot_move {
   private int [][] fields;
   private int destinationX, destinationY;
   private ArrayList<int[][]> bases;
   private ArrayList path;
-  private PossibleMove [][] possible_move;
   boolean move_found = true;
   private CheckMove checkMove;
   private int steps_in_game;
@@ -21,17 +20,17 @@ public class Bot_move {
     checkMove = new CheckMove(longhop);
 
   }
-  public void printArray() {
-    for (int i = 0; i< fields.length ;i ++){
-      for (int j = 0; j< fields.length; j++ ) {
-        if (possible_move[j][i].possible)
-          System.out.print(1 + " ");
-        else
-          System.out.print(0 + " ");
-      }
-      System.out.println();
-    }
-  }
+//  public void printArray() {
+//    for (int i = 0; i< fields.length ;i ++){
+//      for (int j = 0; j< fields.length; j++ ) {
+//        if (possible_move[j][i].possible)
+//          System.out.print(1 + " ");
+//        else
+//          System.out.print(0 + " ");
+//      }
+//      System.out.println();
+//    }
+//  }
   /**
    * oblicza drogę
    * @param x współrżędna początkowa
@@ -95,15 +94,13 @@ public class Bot_move {
 
   /**
    * todo warunek czy istnieje ścieżka chyba nie potrzebny
-   * @param x początkowa pozycja
-   * @param y początkowa pozycja
    * @param check_x współrzędna x do której szukamy ściżki
    * @param check_y współrzędna y do krórej szukamy ścieżki
    * @return zwraca ścieżkę w postaci listay: ((x,y),(x,y) ...)
    *   gdzie pierwsze wystapienie to szukana pozycja
    *   a ostatnia to obecna pozycja
    */
-  private ArrayList getPath(int x, int y, int check_x, int check_y) { // zwraca ścieżkę mie
+  private ArrayList getPath(int check_x, int check_y) { // zwraca ścieżkę mie
     return checkMove.getPath(check_x,check_y);
 
 
@@ -111,7 +108,7 @@ public class Bot_move {
   int calculate_best_move_of_one_checker(int x, int y){ //wejście wspórzędne pkt z któego się ruszamy
     checkMove.setFields(fields);
     checkMove.setXY(x,y); //ROBI WSZYTKO TWORZY ZERUJE I OBLICZA POSSIBLE MOVE
-    possible_move = checkMove.getPossible_move();
+    PossibleMove[][] possible_move = checkMove.getPossible_move();
     int destination = calculate_distance(x,y,destinationX,destinationY);
 
     // PRZYMUSOWE WYJSCIE Z BAZY
@@ -133,23 +130,22 @@ public class Bot_move {
     }
     
     boolean anypossible = false;  //zmienna do skipowania ruchu gdy nie ma możliwości ruchu
-    int profit=0, max_profit=-10, best_moveX =0, best_moveY=0;
+    int profit, max_profit=-10, best_moveX =0, best_moveY=0;
     for (int i = 0; i< fields.length ;i ++) {
-      for (int j = 0; j < fields.length; j++) {
+      for (int j = 0; j < fields.length; j++)
         if (possible_move[i][j].possible && !(i == x && j == y)) {//sprawdza możliwości ruchu (nie uwzglęgniamy pola na którym się znajduje)
           anypossible = true;
-          int pom = calculate_distance(i,j,destinationX,destinationY);  // oblicza odległość po skoku
+          int pom = calculate_distance(i, j, destinationX, destinationY);  // oblicza odległość po skoku
           profit = destination - pom;
-          if (profit > max_profit){
+          if (profit > max_profit) {
             max_profit = profit;
             best_moveX = i;
             best_moveY = j;
           }
         }
-      }
     }
     if(anypossible){
-      path = getPath(x,y,best_moveX,best_moveY);
+      path = getPath(best_moveX,best_moveY);
       move_found = true;
     }
 
@@ -159,7 +155,7 @@ public class Bot_move {
     return max_profit;
   }
 
-  ArrayList<Integer> getPath() {
+  ArrayList getPath() {
     return path;
   }
 }
