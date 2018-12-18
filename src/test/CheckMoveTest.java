@@ -1,8 +1,12 @@
+import logic.CheckMove;
 import logic.NormalBoard;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class CheckMveTest {
+public class CheckMoveTest {
+  NormalBoard nb;
+  CheckMove checkMove;
   int [][] fields = new int[][]{
     {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -22,10 +26,15 @@ public class CheckMveTest {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0}
   };
+  CheckMoveTest(){
+     nb = new NormalBoard(2);
+    checkMove = new CheckMove(true);
+  }
   @Test
-  public void testBoardfor6() {
-    NormalBoard nb = new NormalBoard(6);
+  public void hop_to_adjacent () {
 
+    checkMove.setXY(8,8);
+    assertTrue(checkMove.check_move(7,8));
   }
 
 

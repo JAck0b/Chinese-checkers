@@ -19,7 +19,7 @@ public class CheckMove {
     return y;
   }
 
-  void setXY(int x, int y) {  //ROBI WSZYTKO TWORZY ZERUJE I OBLICZA POSSIBLE MOVE
+  public void setXY(int x, int y) {  //ROBI WSZYTKO TWORZY ZERUJE I OBLICZA POSSIBLE MOVE
     this.x = x;
     this.y = y;
     preapare_array_possible_move();

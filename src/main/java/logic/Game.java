@@ -325,7 +325,7 @@ public class Game {
     }
     new_id = id_by_step(steps, numberOfPlayers + numberOfBots);
 
-//todo invalid
+//todo invalid, winnersy wysyłane
     // todo 2 klientow
     //todo wlasciwe zakonczenie
 
