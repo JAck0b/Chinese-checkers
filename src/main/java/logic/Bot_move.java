@@ -104,23 +104,9 @@ public class Bot_move {
    *   a ostatnia to obecna pozycja
    */
   private ArrayList getPath(int x, int y, int check_x, int check_y) { // zwraca ścieżkę mie
-    ArrayList<Integer> path = new ArrayList<>();
-    int help_x, help_y;
-    if (possible_move [check_x][check_y].possible && !( x == check_x && y == check_y )){
-      path.add(check_x);
-      path.add(check_y);
+    return checkMove.getPath(check_x,check_y);
 
-      while( !( x == check_x && y == check_y )){
-        help_x = possible_move[check_x][check_y].getPreviousX();
-        help_y = possible_move[check_x][check_y].getPreviousY();
-        check_x = help_x;
-        check_y = help_y;
-        path.add(help_x);
-        path.add(help_y);
-      }
-    }
 
-    return path;
   }
   int calculate_best_move_of_one_checker(int x, int y){ //wejście wspórzędne pkt z któego się ruszamy
     checkMove.setFields(fields);

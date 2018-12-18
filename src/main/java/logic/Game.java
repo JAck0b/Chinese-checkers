@@ -30,8 +30,10 @@ public class Game {
    */
   private List<Player> playerList;
 
-  public int current_player;
-  boolean longhop;
+  public boolean allConected = false;
+
+  public int current_player = 2;
+ // boolean longhop;
   boolean still_game = true;
   NormalBoard nb;
   CheckMove checkMove;
@@ -49,13 +51,16 @@ public class Game {
     this.numberOfPlayers = numberOfPlayers;
     this.numberOfBots = numberOfBoots;
     playerList = new ArrayList<>();
+    nb = new NormalBoard(numberOfPlayers + numberOfBots);
+    //this.longhop = longhop;
+    System.out.println("HOOOP = " + longhop);
+    checkMove = new CheckMove(longhop);
+    bot = new Bot(nb.fields,longhop);
+//    nb.printArray();
+    this.fields = nb.fields;
+    checkMove.setFields(fields);
     addPlayers();
 
-    nb = new NormalBoard(this.numberOfPlayers);
-    this.longhop = longhop;
-    checkMove = new CheckMove(longhop);
-    fields = nb.fields;
-    checkMove.setFields(fields);
     add_bases();
     for(int i = 0; i < numberOfPlayers; i++ )
       play_bot[i] = false;
@@ -208,18 +213,16 @@ public class Game {
       while (true) {
         System.out.println(playerList.size() == numberOfPlayers);
         if (playerList.size() == numberOfPlayers) {
+          allConected = true;
           break;
         }
         System.out.println("Creating player");
         Player player = new Player(this, server.getSocket().accept(), id_by_step(counter,numberOfPlayers+numberOfBots));
         counter++;
         playerList.add(player);
-        player.confirm();
+        player.start();
       }
 
-      for (int i = 0; i < playerList.size(); i++) {
-        playerList.get(i).start();
-      }
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
@@ -241,16 +244,16 @@ public class Game {
   }
   public void send_to_everyone(String s){
     for(int i = 0; i< playerList.size(); i++) {
-      try {
-        PrintWriter out = new PrintWriter(playerList.get(i).socket.getOutputStream(), true);
-        out.println(s);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      //out = playerList.get(i).out;
+//      System.out.println("WYSYŁANIE W SEND TO EVER : " + s);
+      (playerList.get(i).out).println(s);
     }
   }
   public void time_for_bot(int id){
+//    System.out.println("BOT PEZED");
     bot.setId(id);
+    bot.setBases(bases);
+//    System.out.println("BOT PO USTALENIU ID");
     int help = totalsteps/(numberOfPlayers+numberOfBots);
     bot.setSteps_in_game(help);
     bot.calculate_best_move();
@@ -265,12 +268,12 @@ public class Game {
 
       send_to_everyone("BOARD");
       send_to_everyone(arrayToString(fields));
-      send_to_everyone("PLAY" + String.valueOf(current_player));
-      send_to_everyone("STEPS" + String.valueOf(help));
+      send_to_everyone("PLAYER " + String.valueOf(current_player));
+      send_to_everyone("STEPS " + String.valueOf(help));
 
 
       try {
-        sleep(5000);
+        sleep(2000);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -309,19 +312,29 @@ public class Game {
     }
 
     int new_id,steps;
-    do {
+
+    totalsteps++;
+    steps = totalsteps % (numberOfPlayers + numberOfBots);
+    while(!still_in_game[steps] || play_bot[steps] ){
+      if(play_bot[steps]) {
+        current_player = id_by_step(steps, numberOfPlayers + numberOfBots);
+        time_for_bot(id_by_step(steps  , numberOfPlayers + numberOfBots));
+      }
       totalsteps++;
       steps = totalsteps % (numberOfPlayers + numberOfBots);
-      new_id = id_by_step(steps, numberOfPlayers + numberOfBots);
-    } while (!still_in_game[new_id]);
-    if(play_bot[steps])
-      time_for_bot(new_id);
+    }
+    new_id = id_by_step(steps, numberOfPlayers + numberOfBots);
 
+//todo invalid
+    // todo 2 klientow
+    //todo wlasciwe zakonczenie
+
+    //System.out.println("UPADTE OBECNY " + current_player + " " + new_id);
     current_player = new_id;
     send_to_everyone("BOARD");
     send_to_everyone(arrayToString(fields));
-    send_to_everyone("PLAY" + String.valueOf(current_player));
+    send_to_everyone("PLAYER " + String.valueOf(current_player));
     int help = totalsteps/(numberOfPlayers+numberOfBots);
-    send_to_everyone("STEPS" + String.valueOf(help));
+    send_to_everyone("STEPS " + String.valueOf(help));
   }
 }

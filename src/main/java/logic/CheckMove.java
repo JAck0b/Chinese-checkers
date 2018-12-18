@@ -292,12 +292,14 @@ public class CheckMove {
    */
 
   public ArrayList<Integer> getPath(int check_x, int check_y) {
+
     ArrayList<Integer> path = new ArrayList<>();
-    if(possible_move [check_x][check_y].possible && !( x == check_x && y == check_y )){
+    int help_x, help_y;
+    if (possible_move [check_x][check_y].possible && !( x == check_x && y == check_y )){
       path.add(check_x);
       path.add(check_y);
-      int help_x, help_y;
-      while(check_x != getX() && check_y!= getY()){
+
+      while( !( x == check_x && y == check_y )){
         help_x = possible_move[check_x][check_y].getPreviousX();
         help_y = possible_move[check_x][check_y].getPreviousY();
         check_x = help_x;
@@ -308,11 +310,10 @@ public class CheckMove {
     }
     return path;
   }
-  /*
   public void printPath (ArrayList <Integer> path){
     for (int i = 0; i < path.size() ; i = i + 2)
       System.out.println("(" + path.get(i) + "," + path.get(i+1) + ")");
   }
-*/
+
 
 }

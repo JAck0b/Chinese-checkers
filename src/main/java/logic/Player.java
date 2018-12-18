@@ -28,7 +28,7 @@ public class Player extends Thread{
   /**
    * Output into particular player.
    */
-  private PrintWriter out;
+  PrintWriter out;
 
   /**
    * ID of particular player.
@@ -57,6 +57,23 @@ public class Player extends Thread{
 
   @Override
   public void run() {
+    while (!game.allConected) {
+
+    }
+    try {
+      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      out = new PrintWriter(socket.getOutputStream(), true);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    out.println("NORMAL BOARD");
+    out.println("BOARD");
+    out.println(game.arrayToString(game.fields));
+    out.println("PLAYER " + String.valueOf(game.current_player));
+//    game.send_to_everyone("PLAY " + String.valueOf(game.current_player));
+    int help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
+    out.println("STEPS " + String.valueOf(help));
+//    game.send_to_everyone("STEPS " + String.valueOf(help));
     String input;
     //String output;
     int firstX=0,firstY=0;
@@ -65,6 +82,10 @@ public class Player extends Thread{
     try {
       while (game.still_game){
         input = in.readLine();
+        String [] parts = input .split(" ");
+//        System.out.println("OTRZYMUJE " + input);
+//        System.out.println("ODBEIRAM DLA : " + id);
+//        System.out.println("CURRENT: " +game.current_player );
         if(input.substring(0, 4).equals("SKIP")){
           game.next_player(id);
 //          out.println("BOARD");
@@ -73,13 +94,21 @@ public class Player extends Thread{
 //          out.println(game.totalsteps/(game.numberOfPlayers + game.numberOfBots));
         }
         if(id == game.current_player && input.substring(0, 3).equals("COR")){
-          if(!first_already_pick) {
-            //COR x,y - wiadomosc od playera
-            while (game.fields[Integer.parseInt(input.substring(4,5))][Integer.parseInt(input.substring(6,7))] != id ) //dopóki nie wybierze swojego pionka
-              input = in.readLine();
 
-            firstX = Integer.parseInt(input.substring(4,5));
-            firstY = Integer.parseInt(input.substring(6,7));
+          //game.nb.printArray();
+          if(!first_already_pick) {
+           // System.out.println("PRZED =  " + game.fields[Integer.parseInt(input.substring(4,5))][Integer.parseInt(input.substring(6,7))]);
+            //COR x,y - wiadomosc od playera
+            while (game.fields[Integer.parseInt(parts[1])][Integer.parseInt(parts[2])] != id ) { //dopóki nie wybierze swojego pionka
+              //System.out.println("ID W: " + game.fields[Integer.parseInt(input.substring(4,5))][Integer.parseInt(input.substring(6,7))]);
+              ;
+              input = in.readLine();
+              parts = input .split(" ");
+//              System.out.println("odbieram w srdku: " + input);
+            }
+//            System.out.println("MAM PIERWSZE");
+            firstX = Integer.parseInt(parts[1]);
+            firstY = Integer.parseInt(parts[2]);
             game.checkMove.setXY(firstX,firstY);
             possible_move = game.checkMove.getPossible_move_array();
             out.println("POS");//wysłam possible move
@@ -87,28 +116,31 @@ public class Player extends Thread{
             first_already_pick = true;
 
           } else {
-            int x = Integer.parseInt(input.substring(4,5));
-            int y = Integer.parseInt(input.substring(6,7));
+            int x = Integer.parseInt(parts[1]);
+            int y = Integer.parseInt(parts[2]);
             if(possible_move [x][y] == 1 && !(firstX == x && firstY == y)){ //czy możliwy ruch na pole wybrane przez kllienta
               ArrayList<Integer> path;
               path = game.checkMove.getPath(x,y);
+              //game.checkMove.printPath(path);
 
               game.fields[path.get(0)][path.get(1)] = id *100; //pkt docelowy
               for(int i=2; i< path.size();i=i+2) //ścieżka
                 game.fields[path.get(i)][path.get(i+1)] = id*10;
 
+//              System.out.println("WYSYLANIE");
+
               game.send_to_everyone("BOARD");
               game.send_to_everyone(game.arrayToString(game.fields));
-              game.send_to_everyone("PLAY" + String.valueOf(game.current_player));
-              int help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
-              game.send_to_everyone("STEPS" + String.valueOf(help));
+              game.send_to_everyone("PLAYER " + String.valueOf(game.current_player));
+              //help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
+              game.send_to_everyone("STEPS " + String.valueOf(help));
 //              out.println("BOARD");
 //              out.println(game.arrayToString(game.fields));
 //              out.println(game.current_player);
 //              int help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
 //              out.println(help);
 
-              sleep(5000);
+              sleep(2000);
 
               //plansza wraca jako normalne pole
               game.fields[path.get(0)][path.get(1)] = id;
@@ -118,11 +150,13 @@ public class Player extends Thread{
 
               // next move
               game.next_player(id);
-
+              first_already_pick = false;
 
             }
             else if (game.fields[x][y] == id){ //użytkownik wybrał innego swojego pionka
-              game.checkMove.setXY(firstX,firstY);
+              game.checkMove.setXY(x,y);
+              firstX = x;
+              firstY = y;
               possible_move = game.checkMove.getPossible_move_array();
               out.println("POS");//wysłam nowe possible move
               out.println(game.arrayToString(possible_move));

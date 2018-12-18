@@ -28,11 +28,14 @@ public class Administrator extends Thread {
       if (input.startsWith("NEW")) {
         int bootsNumber;
         int playersNumber;
-        boolean longhop;
+        int longhop;
         playersNumber = Integer.parseInt(input.substring(4, 5));
         bootsNumber = Integer.parseInt(input.substring(6, 7));
-        longhop = Boolean.parseBoolean(input.substring(8, 9));
-        server.createGame(playersNumber, bootsNumber,longhop);
+        longhop = Integer.parseInt(input.substring(8, 9));
+        if(longhop == 1)  //longhop == true
+          server.createGame(playersNumber, bootsNumber,true);
+        else
+          server.createGame(playersNumber, bootsNumber,false);
       }
     } catch (IOException e) {
       e.printStackTrace();
