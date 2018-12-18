@@ -96,6 +96,7 @@ public class Player extends Thread{
 //        System.out.println("ODBEIRAM DLA : " + id);
 //        System.out.println("CURRENT: " +game.current_player );
         if(input.substring(0, 4).equals("SKIP")){
+          // game.number_of_skip_by_id[] todo czy wywalamy użytkownika po 3 skipach?
           game.next_player(id);
 //          out.println("BOARD");
 //          out.println(game.arrayToString(game.fields));

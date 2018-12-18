@@ -115,15 +115,15 @@ public class Bot_move {
     int destination = calculate_distance(x,y,destinationX,destinationY);
 
     // PRZYMUSOWE WYJSCIE Z BAZY
-    if(steps_in_game > 7 && still_in_base(x,y)){
+    if(steps_in_game > 10 && still_in_base(x,y)){
 //      System.out.println("WYCHODZE Z BAZY");
       destination = destination + 2;
     }
-    else if(steps_in_game > 10 && still_in_base(x,y)){
+    else if(steps_in_game > 15 && still_in_base(x,y)){
 //      System.out.println("WYCHODZE Z BAZY");
       destination = destination + 4;
     }
-    else if(steps_in_game > 15 && still_in_base(x,y)){
+    else if(steps_in_game > 17 && still_in_base(x,y)){
 //      System.out.println("WYCHODZE Z BAZY");
       destination = destination + 6;
     }

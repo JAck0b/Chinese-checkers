@@ -7,6 +7,7 @@ public class PossibleMove {
   boolean possible;
   int previousX, previousY;
   ArrayList <Integer> path;
+  public int number_of_step; //number of hop to get to this possition (only for hop!!!)
   PossibleMove(){
     path = new ArrayList<>();
   }

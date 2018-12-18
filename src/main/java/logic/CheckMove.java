@@ -6,7 +6,7 @@ public class CheckMove {
   private int [][] fields;
   private boolean longhop;
   private int x,y; //pozycja obecna
-  private PossibleMove [][] possible_move; // tablica możliwości ruchu dla danego x,y
+  public PossibleMove [][] possible_move; // tablica możliwości ruchu dla danego x,y
   public CheckMove(boolean longhop){
     this.longhop = longhop;
   }
@@ -30,7 +30,7 @@ public class CheckMove {
     return fields;
   }
 
-  void setFields(int[][] fields) {
+  public void setFields(int[][] fields) {
     this.fields = fields;
   }
 
@@ -48,8 +48,10 @@ public class CheckMove {
               break;
             }
           }
-          if (canhop && !possible_move[x - 2 * i][y].possible) { //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+          if (canhop && (!possible_move[x - 2 * i][y].possible ||   //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+              possible_move[x - 2 * i][y].possible  && number_of_hop +1 <possible_move[x - 2 * i][y].number_of_step)) {
             possible_move [x - 2 * i][y].setPossible(true);
+            possible_move[x - 2 * i][y].number_of_step = number_of_hop + 1;
             possible_move [x - 2 * i][y].setPreviousX(x); //ustawianie wartości z której można dotrzeć na dane pole
             possible_move [x - 2 * i][y].setPreviousY(y);
             hop(x - 2 *i,y,longhop,number_of_hop+1);
@@ -73,9 +75,11 @@ public class CheckMove {
               break;
             }
           }
-          if (canhop && !possible_move[x + 2 * i][y].possible) { //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+          if (canhop && ( !possible_move[x + 2 * i][y].possible ||  //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+            possible_move[x + 2 * i][y].possible && number_of_hop + 1 < possible_move[x + 2 * i][y].number_of_step)) { //szybsza droga
           //  System.out.println("Mozna skoczyć na : " + (x + 2 * i) + " " + y);
             possible_move[x + 2 * i][y].setPossible(true);
+            possible_move[x + 2 * i][y].number_of_step = number_of_hop +1;
             possible_move [x + 2 * i][y].setPreviousX(x); //ustawianie wartości z której można dotrzeć na dane pole
             possible_move [x + 2 * i][y].setPreviousY(y);
             hop(x + 2 *i,y ,longhop,number_of_hop+1);
@@ -102,9 +106,11 @@ public class CheckMove {
               break;
             }
           }
-          if (canhop && !possible_move[x][y - 2 * i].possible) { //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+          if (canhop && ( !possible_move[x][y - 2 * i].possible || //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+            possible_move[x][y - 2 * i].possible && number_of_hop + 1 < possible_move[x][y - 2 * i].number_of_step)) {  //szybsza droga
           //  System.out.println("Mozna skoczyć na : " + x + " " + (y - 2 * i));
             possible_move[x][y - 2 * i].setPossible(true);
+            possible_move[x][y - 2 * i].number_of_step = number_of_hop + 1;
             possible_move [x][y - 2 * i].setPreviousX(x); //ustawianie wartości z której można dotrzeć na dane pole
             possible_move [x][y - 2 * i].setPreviousY(y);
             hop(x,y - 2 *i,longhop,number_of_hop+1);
@@ -128,9 +134,11 @@ public class CheckMove {
               break;
             }
           }
-          if (canhop && !possible_move[x][y + 2 * i].possible) {//czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+          if (canhop && ( !possible_move[x][y + 2 * i].possible || //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+            possible_move[x][y + 2 * i].possible && number_of_hop + 1 < possible_move[x][y + 2 * i].number_of_step )) { //szybsza droga
             //System.out.println("Mozna skoczyć na : " + x + " " + (y  + 2 *i));
             possible_move[x][y + 2 * i].setPossible(true);
+            possible_move[x][y + 2 * i].number_of_step = number_of_hop +1;
             possible_move [x][y + 2 * i].setPreviousX(x); //ustawianie wartości z której można dotrzeć na dane pole
             possible_move [x][y + 2 * i].setPreviousY(y);
             hop(x,y + 2 *i,longhop,number_of_hop+1);
@@ -157,9 +165,11 @@ public class CheckMove {
               break;
             }
           }
-          if (canhop && !possible_move[x - 2 * i][y - 2 * i].possible) {//czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
-            //System.out.println("Mozna skoczyć na : " + (x - 2 *i)  + " " + (y - 2 *i) );
+            if (canhop && ( !possible_move[x - 2 * i][y - 2 * i].possible ||    //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+              possible_move[x - 2 * i][y - 2 * i].possible && number_of_hop + 1 < possible_move[x - 2 * i][y - 2 * i].number_of_step) ) {   //lub czy można dotrzećszybciej
+              //System.out.println("Mozna skoczyć na : " + (x - 2 *i)  + " " + (y - 2 *i) );
             possible_move[x - 2 *i][y - 2 * i].setPossible(true);
+            possible_move[x - 2 *i][y - 2 * i].number_of_step = number_of_hop + 1;
             possible_move [x - 2 * i][y - 2 * i].setPreviousX(x); //ustawianie wartości z której można dotrzeć na dane pole
             possible_move [x - 2 * i][y - 2 * i].setPreviousY(y);
             hop(x - 2 *i,y - 2 *i,longhop,number_of_hop+1);
@@ -183,9 +193,11 @@ public class CheckMove {
               break;
             }
           }
-          if (canhop && !possible_move[x + 2 * i][y + 2 * i].possible)  {//czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+          if (canhop && ( !possible_move[x + 2 * i][y + 2 * i].possible || //czy spełnione warunki skoku i czy pole już nie znalezione (warunek końca rekurencji)
+            possible_move[x + 2 * i][y + 2 * i].possible && number_of_hop + 1 < possible_move[x + 2 * i][y + 2 * i].number_of_step) ) { //lub szybsza droga
            // System.out.println("Mozna skoczyć na : " + (x + 2 *i) + " " + (y  + 2 *i));
             possible_move[x + 2 *i][y + 2 * i].setPossible(true);
+            possible_move[x + 2 *i][y + 2 * i].number_of_step = number_of_hop +1;
             possible_move [x + 2 * i][y + 2 * i].setPreviousX(x); //ustawianie wartości z której można dotrzeć na dane pole
             possible_move [x + 2 * i][y + 2 * i].setPreviousY(y);
             hop(x + 2 *i,y + 2 *i,longhop,number_of_hop+1);

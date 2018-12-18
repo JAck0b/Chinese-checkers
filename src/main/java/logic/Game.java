@@ -241,10 +241,15 @@ public class Game {
 //      }
     }
   }
-  public boolean end_of_game (){
-    for (int i = 0; i< 6 ;i++ )
-      if(still_in_game[i])
-        return false;
+  public boolean end_of_game (){  //kończy nawet gdy jeden gracz został tylko (potrzebne do utknięcia)
+    boolean onlyoneplayerleft = false;
+    for (int i = 0; i< numberOfBots + numberOfPlayers ;i++ )
+      if(still_in_game[i]){
+        if(!onlyoneplayerleft)
+          onlyoneplayerleft = true;
+        else
+          return false;
+    }
     return true;
   }
   public void send_to_everyone(String s){
@@ -254,7 +259,7 @@ public class Game {
       (playerList.get(i).out).println(s);
     }
   }
-  public void time_for_bot(int id){
+  public void time_for_bot(int id, int steps){
 //    System.out.println("BOT PEZED");
     bot.setId(id);
     bot.setBases(bases);
@@ -290,9 +295,9 @@ public class Game {
       }
     }
     else{
-      number_of_skip_by_id [id-2] = number_of_skip_by_id [id-2] + 1;
+      number_of_skip_by_id [steps] = number_of_skip_by_id [steps] + 1;
       // gdy 3 skipy dany plater nie gra
-      if(number_of_skip_by_id [id-2] >= 3) {
+      if(number_of_skip_by_id [steps] >= 3) {
         still_in_game[id-2] = false;
       }
     }
@@ -304,7 +309,14 @@ public class Game {
       still_in_game[id-2] = false;
 
     if(end_of_game()){
+      //server.
       System.out.println("KONIEC");
+
+      send_to_everyone("BOARD");
+      send_to_everyone(arrayToString(fields));
+      send_to_everyone("PLAYER " + String.valueOf(current_player));
+      int help = totalsteps/(numberOfPlayers+numberOfBots);
+      send_to_everyone("STEPS " + String.valueOf(help));
       //todo koniec
       try {
       System.out.println("Server is closed. GAME");
@@ -323,7 +335,7 @@ public class Game {
     while(!still_in_game[steps] || play_bot[steps] ){
       if(play_bot[steps]) {
         current_player = id_by_step(steps, numberOfPlayers + numberOfBots);
-        time_for_bot(id_by_step(steps  , numberOfPlayers + numberOfBots));
+        time_for_bot(id_by_step(steps  , numberOfPlayers + numberOfBots) , steps);
       }
       totalsteps++;
       steps = totalsteps % (numberOfPlayers + numberOfBots);
