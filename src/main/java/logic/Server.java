@@ -14,6 +14,11 @@ public class Server {
     finished = true;
     while (true) {
       if (finished) {
+//        try {
+//          Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//          e.printStackTrace();
+//        }
         setFinished(false);
         Server server = new Server();
         server.initial();

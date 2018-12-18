@@ -25,17 +25,26 @@ public class Administrator extends Thread {
       System.out.println("Administrator is connected.");
       input = in.readLine();
       System.out.println(input);
-      if (input.startsWith("NEW")) {
-        int bootsNumber;
-        int playersNumber;
-        int longhop;
-        playersNumber = Integer.parseInt(input.substring(4, 5));
-        bootsNumber = Integer.parseInt(input.substring(6, 7));
-        longhop = Integer.parseInt(input.substring(8, 9));
-        if(longhop == 1)  //longhop == true
-          server.createGame(playersNumber, bootsNumber,true);
-        else
-          server.createGame(playersNumber, bootsNumber,false);
+      if(input.startsWith("KILL")){
+        try {
+          System.out.println("Server is closed BY ADMIN");
+          server.getSocket().close();
+          logic.Server.setFinished(true);
+        } catch (IOException e) {
+          e.printStackTrace();
+          System.out.println("I cannot close socket.");
+        }
+      } else if (input.startsWith("NEW")) {
+      int bootsNumber;
+      int playersNumber;
+      int longhop;
+      playersNumber = Integer.parseInt(input.substring(4, 5));
+      bootsNumber = Integer.parseInt(input.substring(6, 7));
+      longhop = Integer.parseInt(input.substring(8, 9));
+      if(longhop == 1)  //longhop == true
+        server.createGame(playersNumber, bootsNumber,true);
+      else
+        server.createGame(playersNumber, bootsNumber,false);
       }
     } catch (IOException e) {
       e.printStackTrace();

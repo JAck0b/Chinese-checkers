@@ -38,7 +38,7 @@ public class Game {
 
   public int current_player = 2;
  // boolean longhop;
-  boolean still_game = true;
+  boolean game_run = true;
   NormalBoard nb;
   CheckMove checkMove;
   Bot bot;
@@ -304,6 +304,16 @@ public class Game {
 
 
   }
+  public void kill(){
+    try {
+      System.out.println("Server is closed. GAME");
+      server.getSocket().close();
+      logic.Server.setFinished(true);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.out.println("I cannot close socket.");
+    }
+  }
   public synchronized void next_player(int id){
     if(all_in_base(id))
       still_in_game[id-2] = false;
@@ -318,14 +328,7 @@ public class Game {
       int help = totalsteps/(numberOfPlayers+numberOfBots);
       send_to_everyone("STEPS " + String.valueOf(help));
       //todo koniec
-      try {
-      System.out.println("Server is closed. GAME");
-      server.getSocket().close();
-      logic.Server.setFinished(true);
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.out.println("I cannot close socket.");
-      }
+      kill();
     }
 
     int new_id,steps;
