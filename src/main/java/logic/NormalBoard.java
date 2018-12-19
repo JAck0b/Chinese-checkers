@@ -64,19 +64,10 @@ public class NormalBoard implements Board {
         changeFields(3);
         break;
       }
-      case 3: {
-        changeFields(6);
-        changeFields(4);
-        changeFields(3);
-        break;
-      }
+
       case 4: {
         changeFields(6);
         changeFields(3);
-        break;
-      }
-      case 5: {
-        changeFields(6);
         break;
       }
     }
