@@ -175,6 +175,9 @@ public class Bot {
     }
 
   }
+
+
+
   void calculate_best_move(){
     Bot_move bot_move = new Bot_move(fields,longhop,steps_in_game,bases);
     checkers_in_base = new ArrayList<>();

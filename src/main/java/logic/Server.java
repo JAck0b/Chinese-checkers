@@ -5,22 +5,17 @@ import java.net.ServerSocket;
 
 public class Server {
 
-//  private static volatile boolean finished;
   private ServerSocket socket;
-  public volatile static StateServer stateServer = new Off();
+  volatile static StateServer stateServer = new Off();
 
   public static void main(String[] args) {
-//    finished = true;
     while (true) {
-//      System.out.println(stateServer.isRun());
       if (!stateServer.isRun()) {
         try {
           Thread.sleep(2000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-//        setFinished(false);
-        System.out.println(stateServer.isRun());
         stateServer = stateServer.nextState();
         Server server = new Server();
         server.initial();
@@ -37,12 +32,11 @@ public class Server {
       administrator.start();
     } catch (IOException e) {
       System.out.println("ERRROR PORT ZAJETY");
-//      e.printStackTrace();
     }
   }
 
-void createGame(int playersNumber, int bootsNumber, boolean longhop) {
-  new Game(this, playersNumber, bootsNumber, longhop);
+void createGame(int playersNumber, int bootsNumber, boolean longhop, String boardMode) {
+  new Game(this, playersNumber, bootsNumber, longhop, boardMode);
   }
 
   ServerSocket getSocket() {
@@ -52,10 +46,5 @@ void createGame(int playersNumber, int bootsNumber, boolean longhop) {
   static void changeState() {
     stateServer = stateServer.nextState();
   }
-
-//  static void setFinished(boolean condition) {
-//    finished = condition;
-//  }
-
 
 }
