@@ -7,17 +7,17 @@ import static java.lang.Math.min;
 
 class Bot_move {
   private int [][] fields;
-  private int destinationX, destinationY;
+  public int destinationX, destinationY;
   private ArrayList<int[][]> bases;
   private ArrayList path;
   boolean move_found = true;
   private CheckMove checkMove;
   private int steps_in_game;
-  Bot_move(int [][] fields, boolean longhop, int steps_in_game, ArrayList<int [][]> bases ){
+  Bot_move(int [][] fields, boolean longhop, int maxhop,int steps_in_game, ArrayList<int [][]> bases ){
     this.fields = fields;
     this.steps_in_game = steps_in_game;
     this.bases = bases;
-    checkMove = new CheckMove(longhop);
+    checkMove = new CheckMove(longhop, maxhop);
 
   }
 //  public void printArray() {

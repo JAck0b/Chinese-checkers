@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class CheckMove {
   private int [][] fields;
   private boolean longhop;
+  int maxhop;
   private int x,y; //pozycja obecna
   public PossibleMove [][] possible_move; // tablica możliwości ruchu dla danego x,y
-  public CheckMove(boolean longhop){
+  public CheckMove(boolean longhop, int maxhop){
+    this.maxhop = maxhop;
     this.longhop = longhop;
   }
 
@@ -24,7 +26,7 @@ public class CheckMove {
   }
 
   private void horizontal_move(int x, int y, boolean longhop, int number_of_hop){
-    if(number_of_hop < 6){
+    if(number_of_hop < maxhop){
       int i=1;
       boolean canhop = true;
       while(x - i >= 0){  //poszukiwanie pierwszej kuli do przeskoczenia w lewo, nie ma co sprawdzać gdy nie spełnione warunki
@@ -81,7 +83,7 @@ public class CheckMove {
     }
   }
   private void vertical_move(int x, int y, boolean longhop, int number_of_hop){
-    if(number_of_hop < 6){
+    if(number_of_hop < maxhop){
       int i=1;
       boolean canhop = true;
       while(y - i >= 0){  //poszukiwanie pierwszej kuli do przeskoczenia w górę, nie ma co sprawdzać gdy nie spełnione warunki
@@ -140,7 +142,7 @@ public class CheckMove {
     }
   }
   private void cross_move(int x, int y, boolean longhop, int number_of_hop){
-    if(number_of_hop < 6){
+    if(number_of_hop < maxhop){
       int i=1;
       boolean canhop = true;
       while(x - i >= 0 && y - i >= 0){  //poszukiwanie pierwszej kuli do przeskoczenia w góra-lewo, nie ma co sprawdzać gdy nie spełnione warunki

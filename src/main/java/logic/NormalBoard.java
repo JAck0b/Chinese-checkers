@@ -54,7 +54,7 @@ public class NormalBoard implements Board {
           fields[i][j] = 1;
   }
 
-  // TODO do sprawdzenia w zasadach którzy gracze grają
+
   public void prepareFields(int numberOfPlayers) {
     switch (numberOfPlayers) {
       case 2: {

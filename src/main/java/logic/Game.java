@@ -7,7 +7,6 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class Game {
-  // TODO  Na koniec gry, gdy się skończy trzeba wywołać metodę listener.
   /**
    * Main server.
    */
@@ -41,19 +40,22 @@ public class Game {
   boolean[] still_in_game = {true, true, true, true, true, true};
   volatile int totalsteps = 0;
   ArrayList<int[][]> bases;
+  int maxhop;
 
-  Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop, String boardMode) {
+  Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop, int maxhop, String boardMode) {
     this.server = server;
     this.numberOfPlayers = numberOfPlayers;
     this.numberOfBots = numberOfBoots;
+    this.maxhop = maxhop;
     add_bases();
     playerList = new ArrayList<>();
 //    NormalBoard nb = new NormalBoard(numberOfPlayers + numberOfBots);
     BoardFactory boardFactory = new BoardFactory();
     Board nb = boardFactory.createBoart(boardMode);
     nb.prepareFields(numberOfPlayers + numberOfBots);
-    checkMove = new CheckMove(longhop);
+    checkMove = new CheckMove(longhop, maxhop);
     bot = Bot.getInstance();
+    bot.setMaxhop(maxhop);
     bot.setFields(nb.getFields());
     bot.setLonghop(longhop);
     this.fields = nb.getFields();

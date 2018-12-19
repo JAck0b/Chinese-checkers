@@ -4,18 +4,15 @@ import java.util.ArrayList;
 
 public class Bot {
   public int [][] fields;
-  private ArrayList<int[][]> bases;
+  public ArrayList<int[][]> bases;
   private ArrayList<Integer> checkers_in_base;
   private ArrayList path_best_move = new ArrayList<>();
   public int id; //ID of player(nr pionków)
   private int destinationX, destinationY;
   public boolean bot_skip_move, longhop;
-  public int steps_in_game;
+  public int steps_in_game, maxhop;
 
-  public Bot(){
-//    this.fields = fields;
-//    this.longhop = longhop;
-  }
+
 
   private static volatile Bot instance = null;
 
@@ -26,6 +23,9 @@ public class Bot {
     return instance;
   }
 
+  public void setMaxhop(int maxhop) {
+    this.maxhop = maxhop;
+  }
   public void setFields(int[][] fields) {
     this.fields = fields;
   }
@@ -179,7 +179,7 @@ public class Bot {
 
 
   void calculate_best_move(){
-    Bot_move bot_move = new Bot_move(fields,longhop,steps_in_game,bases);
+    Bot_move bot_move = new Bot_move(fields,longhop,maxhop, steps_in_game,bases);
     checkers_in_base = new ArrayList<>();
     find_destinaionXY();
     ArrayList <Integer> checkers = find_checkers();

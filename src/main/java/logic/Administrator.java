@@ -36,16 +36,15 @@ public class Administrator extends Thread {
           System.out.println("I cannot close socket.");
         }
       } else if (input.startsWith("NEW")) {
-      int bootsNumber;
-      int playersNumber;
-      int longhop;
+      int botsNumber, playersNumber, longhop, maxhop;
       playersNumber = Integer.parseInt(input.substring(4, 5));
-      bootsNumber = Integer.parseInt(input.substring(6, 7));
+      botsNumber = Integer.parseInt(input.substring(6, 7));
       longhop = Integer.parseInt(input.substring(8, 9));
+      maxhop = Integer.parseInt(input.substring(10,11));
       if(longhop == 1)  //longhop == true
-        server.createGame(playersNumber, bootsNumber,true, "normal");
+        server.createGame(playersNumber, botsNumber,true, maxhop,"normal");
       else
-        server.createGame(playersNumber, bootsNumber,false, "normal");
+        server.createGame(playersNumber, botsNumber,false,maxhop, "normal");
       }
     } catch (IOException e) {
       e.printStackTrace();

@@ -35,8 +35,8 @@ public class Server {
     }
   }
 
-void createGame(int playersNumber, int bootsNumber, boolean longhop, String boardMode) {
-  new Game(this, playersNumber, bootsNumber, longhop, boardMode);
+void createGame(int playersNumber, int bootsNumber, boolean longhop, int maxhop, String boardMode) {
+  new Game(this, playersNumber, bootsNumber, longhop, maxhop, boardMode);
   }
 
   ServerSocket getSocket() {
