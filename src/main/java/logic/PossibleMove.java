@@ -4,7 +4,7 @@ package logic;
 import java.util.ArrayList;
 
 public class PossibleMove {
-  boolean possible;
+  public boolean possible;
   private int previousX, previousY;
   public int number_of_step; //number of hop to get to this possition (only for hop!!!)
   PossibleMove(){

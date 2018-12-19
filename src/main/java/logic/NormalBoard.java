@@ -52,7 +52,7 @@ public class NormalBoard {
         if(fields[i][j] == previous)
           fields[i][j] = 1;
   }
-  // TODO do sprawdzenia w zasadach którzy gracze grają
+
   private void prepare_fields(int number_of_players){
     switch (number_of_players){
       case 2: {
@@ -62,19 +62,10 @@ public class NormalBoard {
         change_fields(3);
         break;
       }
-      case 3: {
-        change_fields(6);
-        change_fields(4);
-        change_fields(3);
-        break;
-      }
+
       case 4: {
         change_fields(6);
         change_fields(3);
-        break;
-      }
-      case 5: {
-        change_fields(6);
         break;
       }
     }
