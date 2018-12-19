@@ -30,16 +30,16 @@ public class BotThread extends Thread {
         game.bot.setId(id);
         game.bot.setBases(game.bases);
         int help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
-        int help2 = game.totalsteps % (game. numberOfPlayers + game.numberOfBots);
+        int help2;
         game.bot.setSteps_in_game(help);
         game.bot.calculate_best_move();
-        ArrayList<Integer> path;
+        ArrayList path;
         if(!game.bot.isBot_skip_move()) {
           path = game.bot.getPath_best_move();
 
-          game.fields[path.get(0)][path.get(1)] = id *100; //pkt docelowy
+          game.fields[(int) path.get(0)][(int) path.get(1)] = id *100; //pkt docelowy
           for(int i=2; i< path.size();i=i+2) //ścieżka
-            game.fields[path.get(i)][path.get(i+1)] = id*10;
+            game.fields[(int) path.get(i)][(int) path.get(i+1)] = id*10;
 
           help = game.totalsteps/(game.numberOfPlayers + game.numberOfBots);
           help2 = game.totalsteps % (game. numberOfPlayers + game.numberOfBots);
@@ -55,9 +55,9 @@ public class BotThread extends Thread {
           }
 
           //plansza wraca jako normalne pole
-          game.fields[path.get(0)][path.get(1)] = id;
+          game.fields[(int) path.get(0)][(int) path.get(1)] = id;
           for(int i=2; i< path.size();i=i+2){
-            game.fields[path.get(i)][path.get(i+1)] = 1;
+            game.fields[(int) path.get(i)][(int) path.get(i+1)] = 1;
           }
 //          System.out.println("ZWIEKSZAM W SREODKU !!!!!!!!!!!!!!!!!!!!!!!!!!!");
           game.next_player(id);
