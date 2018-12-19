@@ -68,7 +68,8 @@ public class NormalBoardTest
   };
   @Test
   public void testBoardfor6() {
-    NormalBoard nb = new NormalBoard(6);
+    NormalBoard nb = new NormalBoard();
+    nb.prepareFields(6);
     for(int i = 0; i < nb.fields.length ; i++ ){
       for (int j = 0; j < nb.fields.length ; j++ ){
         assertEquals(fields6 [i][j],nb.fields[i][j],0.001);
@@ -77,7 +78,8 @@ public class NormalBoardTest
   }
   @Test
   public void testBoardfor4() {
-    NormalBoard nb = new NormalBoard(4);
+    NormalBoard nb = new NormalBoard();
+    nb.prepareFields(4);
     for(int i = 0; i < nb.fields.length ; i++ ){
       for (int j = 0; j < nb.fields.length ; j++ ){
         assertEquals(fields4 [i][j],nb.fields[i][j],0.001);
@@ -86,7 +88,8 @@ public class NormalBoardTest
   }
   @Test
   public void testBoardfor2() {
-    NormalBoard nb = new NormalBoard(2);
+    NormalBoard nb = new NormalBoard();
+    nb.prepareFields(2);
     for(int i = 0; i < nb.fields.length ; i++ ){
       for (int j = 0; j < nb.fields.length ; j++ ){
         assertEquals(fields2 [i][j],nb.fields[i][j],0.001);
