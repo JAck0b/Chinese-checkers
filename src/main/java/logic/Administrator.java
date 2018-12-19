@@ -43,9 +43,9 @@ public class Administrator extends Thread {
       bootsNumber = Integer.parseInt(input.substring(6, 7));
       longhop = Integer.parseInt(input.substring(8, 9));
       if(longhop == 1)  //longhop == true
-        server.createGame(playersNumber, bootsNumber,true);
+        server.createGame(playersNumber, bootsNumber,true, "normal");
       else
-        server.createGame(playersNumber, bootsNumber,false);
+        server.createGame(playersNumber, bootsNumber,false, "normal");
       }
     } catch (IOException e) {
       e.printStackTrace();

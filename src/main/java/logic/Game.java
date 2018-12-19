@@ -42,19 +42,21 @@ class Game {
   volatile int totalsteps = 0;
   ArrayList<int[][]> bases;
 
-  Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop) {
+  Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop, String boardMode) {
     this.server = server;
     this.numberOfPlayers = numberOfPlayers;
     this.numberOfBots = numberOfBoots;
     add_bases();
     playerList = new ArrayList<>();
-    NormalBoard nb = new NormalBoard(numberOfPlayers + numberOfBots);
+//    NormalBoard nb = new NormalBoard(numberOfPlayers + numberOfBots);
+    BoardFactory boardFactory = new BoardFactory();
+    Board nb = boardFactory.createBoart(boardMode);
+    nb.prepareFields(numberOfPlayers + numberOfBots);
     checkMove = new CheckMove(longhop);
     bot = Bot.getInstance();
-//    bot = new Bot(nb.fields, longhop);
-    bot.setFields(nb.fields);
+    bot.setFields(nb.getFields());
     bot.setLonghop(longhop);
-    this.fields = nb.fields;
+    this.fields = nb.getFields();
     checkMove.setFields(fields);
     addPlayers();
 

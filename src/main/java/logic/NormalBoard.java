@@ -1,9 +1,9 @@
 package logic;
 
-public class NormalBoard {
+public class NormalBoard implements Board {
   public int[][] fields;
 
-  public NormalBoard(int number_of_players) {
+  public NormalBoard() {
     fields = new int[][]{
       {0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
       {0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -44,41 +44,46 @@ public class NormalBoard {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0} };
 */
 
-    prepare_fields(number_of_players);
+//    prepareFields(numberOfPlayers);
   }
 
-  private void change_fields(int previous){
-    for (int i = 0; i< fields.length ;i ++)
-      for (int j = 0; j< fields.length; j++ )
-        if(fields[i][j] == previous)
+  public void changeFields(int previous) {
+    for (int i = 0; i < fields.length; i++)
+      for (int j = 0; j < fields.length; j++)
+        if (fields[i][j] == previous)
           fields[i][j] = 1;
   }
 
   // TODO do sprawdzenia w zasadach którzy gracze grają
-  private void prepare_fields(int number_of_players){
-    switch (number_of_players){
+  public void prepareFields(int numberOfPlayers) {
+    switch (numberOfPlayers) {
       case 2: {
-        change_fields(7);
-        change_fields(6);
-        change_fields(4);
-        change_fields(3);
+        changeFields(7);
+        changeFields(6);
+        changeFields(4);
+        changeFields(3);
         break;
       }
       case 3: {
-        change_fields(6);
-        change_fields(4);
-        change_fields(3);
+        changeFields(6);
+        changeFields(4);
+        changeFields(3);
         break;
       }
       case 4: {
-        change_fields(6);
-        change_fields(3);
+        changeFields(6);
+        changeFields(3);
         break;
       }
       case 5: {
-        change_fields(6);
+        changeFields(6);
         break;
       }
     }
+  }
+
+  @Override
+  public int[][] getFields() {
+    return fields;
   }
 }
