@@ -27,9 +27,10 @@ public class Administrator extends Thread {
       System.out.println(input);
       if(input.startsWith("KILL")){
         try {
+          logic.Server.changeState();
+          System.out.println(Server.stateServer.isRun());
           System.out.println("Server is closed BY ADMIN");
           server.getSocket().close();
-          logic.Server.setFinished(true);
         } catch (IOException e) {
           e.printStackTrace();
           System.out.println("I cannot close socket.");

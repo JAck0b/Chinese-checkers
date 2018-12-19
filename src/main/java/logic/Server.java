@@ -5,19 +5,23 @@ import java.net.ServerSocket;
 
 public class Server {
 
-  private static volatile boolean finished;
+//  private static volatile boolean finished;
   private ServerSocket socket;
+  public volatile static StateServer stateServer = new Off();
 
   public static void main(String[] args) {
-    finished = true;
+//    finished = true;
     while (true) {
-      if (finished) {
+//      System.out.println(stateServer.isRun());
+      if (!stateServer.isRun()) {
         try {
           Thread.sleep(2000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-        setFinished(false);
+//        setFinished(false);
+        System.out.println(stateServer.isRun());
+        stateServer = stateServer.nextState();
         Server server = new Server();
         server.initial();
       }
@@ -45,9 +49,13 @@ void createGame(int playersNumber, int bootsNumber, boolean longhop) {
     return socket;
   }
 
-  static void setFinished(boolean condition) {
-    finished = condition;
+  static void changeState() {
+    stateServer = stateServer.nextState();
   }
+
+//  static void setFinished(boolean condition) {
+//    finished = condition;
+//  }
 
 
 }

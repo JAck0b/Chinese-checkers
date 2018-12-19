@@ -40,9 +40,7 @@ public class Player extends Thread {
     this.game = game;
     this.socket = socket;
     this.id = id;
-    // 0 - 5
     int id2_stepeps1 = id2_stepeps;
-//    System.out.println("OTRZYMUJE W KONSTRUKTORZE " + id + " " + id2_stepeps);
   }
 
   @Override
@@ -81,22 +79,17 @@ public class Player extends Thread {
         input = in.readLine();
 
         if (input != null) {
-//            System.out.println("OTRZYMUJE " + input);
           parts = input.split(" ");
           if (input.startsWith("KILL")) {
             System.out.println("Server is closed BY USER");
             game.send_to_everyone("KILL");
             game.game_run = false;
             game.kill();
-//          Server.setFinished(true);
             break;
           } else if (id == game.current_player && input.substring(0, 4).equals("SKIP")) {
-//            System.out.println("czy currnet = " + (id == game.current_player));
-            // game.number_of_skip_by_id[] todo czy wywalamy użytkownika po 3 skipach?
             System.out.println("SKIP");
             game.next_player(id);
           } else if (id == game.current_player && input.substring(0, 3).equals("COR")) {
-//              System.out.println("RZUSZA PLAYER " + id + " " + id2_stepeps);
             if (!first_already_pick) {
               while (game.fields[Integer.parseInt(parts[1])][Integer.parseInt(parts[2])] != id) { //dopóki nie wybierze swojego pionka
                 input = in.readLine();
@@ -167,7 +160,6 @@ public class Player extends Thread {
 
     } catch (IOException e) {
       System.out.println("EX");
-      //e.printStackTrace();
     } catch (InterruptedException e) {  //do sleepa
       System.out.println("EX");
       System.exit(0);

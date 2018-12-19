@@ -50,7 +50,10 @@ class Game {
     playerList = new ArrayList<>();
     NormalBoard nb = new NormalBoard(numberOfPlayers + numberOfBots);
     checkMove = new CheckMove(longhop);
-    bot = new Bot(nb.fields, longhop);
+    bot = Bot.getInstance();
+//    bot = new Bot(nb.fields, longhop);
+    bot.setFields(nb.fields);
+    bot.setLonghop(longhop);
     this.fields = nb.fields;
     checkMove.setFields(fields);
     addPlayers();
@@ -230,7 +233,9 @@ class Game {
       System.out.println("Server is closed. GAME");
       //send_to_everyone("KILL");
       server.getSocket().close();
-      logic.Server.setFinished(true);
+      if (logic.Server.stateServer.isRun())
+        logic.Server.changeState();
+      System.out.println("Kill state = " + logic.Server.stateServer.isRun());
     } catch (IOException e) {
       e.printStackTrace();
       System.out.println("I cannot close socket.");

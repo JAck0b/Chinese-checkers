@@ -12,8 +12,25 @@ class Bot {
   private boolean bot_skip_move, longhop;
   private int steps_in_game;
 
-  Bot(int[][] fields, boolean longhop){
+  private Bot(){
+//    this.fields = fields;
+//    this.longhop = longhop;
+  }
+
+  private static volatile Bot instance = null;
+
+  public static Bot getInstance() {
+    if (instance == null) {
+      instance = new Bot();
+    }
+    return instance;
+  }
+
+  void setFields(int[][] fields) {
     this.fields = fields;
+  }
+
+  void setLonghop(boolean longhop) {
     this.longhop = longhop;
   }
 

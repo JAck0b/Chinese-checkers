@@ -23,8 +23,8 @@ public class NormalBoard {
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 0, 0, 0},
       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0}
     };
-/*
-    fields = new int[][]{
+
+    /*fields = new int[][]{
     {0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -42,16 +42,18 @@ public class NormalBoard {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0} };
-
 */
+
     prepare_fields(number_of_players);
   }
+
   private void change_fields(int previous){
     for (int i = 0; i< fields.length ;i ++)
       for (int j = 0; j< fields.length; j++ )
         if(fields[i][j] == previous)
           fields[i][j] = 1;
   }
+
   // TODO do sprawdzenia w zasadach którzy gracze grają
   private void prepare_fields(int number_of_players){
     switch (number_of_players){
@@ -79,14 +81,4 @@ public class NormalBoard {
       }
     }
   }
-
-//  public void printArray() {    //odrotne wyświetlannie
-//    for (int y = 0; y < fields.length; y++) {
-//      for (int[] field : fields) {
-//        System.out.print(field[y] + " ");
-//      }
-//      System.out.println();
-//    }
-//  }
-
 }
