@@ -6,7 +6,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-class Game {
+public class Game {
   // TODO  Na koniec gry, gdy się skończy trzeba wywołać metodę listener.
   /**
    * Main server.
@@ -42,7 +42,7 @@ class Game {
   volatile int totalsteps = 0;
   ArrayList<int[][]> bases;
 
-  Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop) {
+  public Game(Server server, int numberOfPlayers, int numberOfBoots, boolean longhop) {
     this.server = server;
     this.numberOfPlayers = numberOfPlayers;
     this.numberOfBots = numberOfBoots;

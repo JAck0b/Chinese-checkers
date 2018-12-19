@@ -261,10 +261,10 @@ public class CheckMove {
    * 1 : possible move
    * 0 : not possible move
    */
-  PossibleMove [][] getPossible_move() {
+  public PossibleMove [][] getPossible_move() {
     return possible_move;
   }
-  int [][] getPossible_move_array(){
+  public int [][] getPossible_move_array(){
     int size = fields.length;
     int [][] result = new int[size][size];
     for (int i = 0; i< fields.length ;i ++) {

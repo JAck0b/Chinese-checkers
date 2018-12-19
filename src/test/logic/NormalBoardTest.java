@@ -1,11 +1,11 @@
-
+package logic;
 
 import logic.NormalBoard;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit NormalBoardTest for simple App.
+ * Unit logic.NormalBoardTest for simple App.
  */
 public class NormalBoardTest
 {

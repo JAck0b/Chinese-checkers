@@ -2,17 +2,17 @@ package logic;
 
 import java.util.ArrayList;
 
-class Bot {
-  private int [][] fields;
+public class Bot {
+  public int [][] fields;
   private ArrayList<int[][]> bases;
   private ArrayList<Integer> checkers_in_base;
   private ArrayList path_best_move = new ArrayList<>();
-  private int id; //ID of player(nr pionków)
+  public int id; //ID of player(nr pionków)
   private int destinationX, destinationY;
-  private boolean bot_skip_move, longhop;
-  private int steps_in_game;
+  public boolean bot_skip_move, longhop;
+  public int steps_in_game;
 
-  private Bot(){
+  public Bot(){
 //    this.fields = fields;
 //    this.longhop = longhop;
   }
@@ -26,23 +26,23 @@ class Bot {
     return instance;
   }
 
-  void setFields(int[][] fields) {
+  public void setFields(int[][] fields) {
     this.fields = fields;
   }
 
-  void setLonghop(boolean longhop) {
+  public void setLonghop(boolean longhop) {
     this.longhop = longhop;
   }
 
-  void setId(int id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-  void setSteps_in_game(int steps_in_game) {
+  public void setSteps_in_game(int steps_in_game) {
     this.steps_in_game = steps_in_game;
   }
 
-  void setBases(ArrayList<int[][]> bases) {
+  public void setBases(ArrayList<int[][]> bases) {
     this.bases = bases;
   }
 
